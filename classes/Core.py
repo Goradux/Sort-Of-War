@@ -43,8 +43,9 @@ class Arena:
     def __init__(self):
         self.renderer = Renderer()
         # self.renderer.init()
-        self.fighter_left = Fighter(alg='quick')
-        self.fighter_right = Fighter(alg='merge')
+        # self.fighter_left = Fighter(alg='quick')
+        self.fighter_left = Fighter(alg='selection')
+        self.fighter_right = Fighter(alg='insertion')
         
         
     def test(self):
@@ -52,8 +53,10 @@ class Arena:
 
 
     def start(self):
-        some_list = [i + 1 for i in range(15)]
+        some_list = [i + 1 for i in range(5)]
         random.shuffle(some_list)
+        unsorted_left = some_list
+        unsorted_right = list(some_list)
         print()
         print('Shuffled list:')
         print(some_list)
@@ -62,13 +65,17 @@ class Arena:
 
 
         print('Left,', self.fighter_left.name)
-        sorted_left = self.fighter_left.sort(some_list)
-        print(sorted_left)
-        print(self.fighter_left.counter())
-        print(self.fighter_left.focus())
+        sorted_left = self.fighter_left.sort(unsorted_left)
+        # print(sorted_left)
+        # print(self.fighter_left.counter)
+        # print(self.fighter_left.focus)
+        for array, index in zip(self.fighter_left.history, self.fighter_left.focus):
+            print(array, index)
 
-        # print('Right,', self.fighter_right.name)
-        # sorted_right = self.fighter_right.sort(some_list)
-        # # print(sorted_right)
-        # print(self.fighter_right.counter())
-        
+
+    
+        print('Right,', self.fighter_right.name)
+        sorted_right = self.fighter_right.sort(unsorted_right)
+
+        for array, index in zip(self.fighter_right.history, self.fighter_right.focus):
+            print(array, index)
