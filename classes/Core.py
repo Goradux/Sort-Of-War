@@ -44,8 +44,8 @@ class Arena:
         self.renderer = Renderer()
         # self.renderer.init()
         # self.fighter_left = Fighter(alg='quick')
-        self.fighter_left = Fighter(alg='selection')
-        self.fighter_right = Fighter(alg='insertion')
+        self.fighter_left = Fighter(alg='insertion')
+        self.fighter_right = Fighter(alg='bubble')
         
         
     def test(self):
@@ -53,7 +53,7 @@ class Arena:
 
 
     def start(self):
-        some_list = [i + 1 for i in range(5)]
+        some_list = [i + 1 for i in range(15)]
         random.shuffle(some_list)
         unsorted_left = some_list
         unsorted_right = list(some_list)
@@ -71,6 +71,7 @@ class Arena:
         # print(self.fighter_left.focus)
         for array, index in zip(self.fighter_left.history, self.fighter_left.focus):
             print(array, index)
+        print(len(self.fighter_left.focus))
 
 
     
@@ -79,3 +80,4 @@ class Arena:
 
         for array, index in zip(self.fighter_right.history, self.fighter_right.focus):
             print(array, index)
+        print(len(self.fighter_right.focus))
