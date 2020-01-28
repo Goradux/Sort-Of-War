@@ -78,11 +78,18 @@ class Quicksort:
 
             # IRRELEVANT
             # choosing pivot
-            # some_point = random.randint(1, len(array)-1)
-            # in_place = array[some_point]
-            # print(left + array + right, '- starting point, pivot is', array[some_point])
-            # array[0], array[some_point] = array[some_point], array[0]
+            some_point = random.randint(1, len(array)-1)
+            in_place = array[some_point]
+            print('- starting point, pivot is', array[some_point])
+            self.history.append(list(self.tmp_array))
+            self.focus.append(replace_index)
+
+            array[0], array[some_point] = array[some_point], array[0]
             
+            for j in range(len(array)):
+                self.tmp_array[replace_index+j] = array[j]
+
+            # or comment this whole ^(81-90) thing out
 
             # pivot - element 0
             # print(array, '', array[0], 'is the pivot')
