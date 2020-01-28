@@ -43,8 +43,8 @@ class Arena:
     def __init__(self):
         self.renderer = Renderer()
         # self.renderer.init()
-        # self.fighter_left = Fighter(alg='quick')
-        self.fighter_left = Fighter(alg='insertion')
+        self.fighter_left = Fighter(alg='quick')
+        # self.fighter_left = Fighter(alg='insertion')
         self.fighter_right = Fighter(alg='bubble')
         
         
@@ -53,7 +53,7 @@ class Arena:
 
 
     def start(self):
-        some_list = [i + 1 for i in range(15)]
+        some_list = [i + 1 for i in range(20)]
         random.shuffle(some_list)
         unsorted_left = some_list
         unsorted_right = list(some_list)
