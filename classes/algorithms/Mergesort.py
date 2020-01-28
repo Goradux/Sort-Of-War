@@ -4,6 +4,9 @@ class Mergesort:
     counter = 0
     name = 'Mergesort'
     history = []
+    focus = []
+    tmp_array = []
+
 
     def get_counter(self):
         return self.counter
@@ -12,10 +15,10 @@ class Mergesort:
         return self.history
 
     def sort(self, unsorted_list):
-        start = datetime.datetime.now()
+        self.tmp_array = list(unsorted_list)
         self.mergesort(unsorted_list)
-        end = datetime.datetime.now()
-        print(end - start)
+        self.history.append(unsorted_list)
+        self.focus.append(-1)
         return unsorted_list
     
     def mergesort(self, unsorted_list):

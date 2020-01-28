@@ -80,7 +80,7 @@ class Quicksort:
             # choosing pivot
             some_point = random.randint(1, len(array)-1)
             in_place = array[some_point]
-            print('- starting point, pivot is', array[some_point])
+            # print('- starting point, pivot is', array[some_point])
             self.history.append(list(self.tmp_array))
             self.focus.append(replace_index)
 
@@ -110,7 +110,7 @@ class Quicksort:
                                 self.tmp_array[replace_index+j] = array[j]
                             # print(tmp_array, '- tmp')
                             
-                            print(self.tmp_array, 'swapped', array[i], 'and', array[index])
+                            # print(self.tmp_array, 'swapped', array[i], 'and', array[index])
 
 
             if i is not 0:
@@ -125,8 +125,7 @@ class Quicksort:
                 # print(tmp_array, '- tmp')
             self.history.append(list(self.tmp_array))
             self.focus.append(replace_index+i+1)
-            print(self.tmp_array, array[i], 'should be in place now')
-            # print(left + array + right, array[i], 'should be in place now')
+            # print(self.tmp_array, array[i], 'should be in place now')
 
 
             return self.my_quicksort(array[0:i], left, [array[i]] + array[i+1:len(array)] + right, replace_index) + [array[i]] + self.my_quicksort(array[i+1:len(array)], left + array[0:i] + [array[i]], right, replace_index+i+1)

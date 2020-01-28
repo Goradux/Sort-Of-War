@@ -65,3 +65,6 @@ class Renderer:
             time.sleep(0.5)
         # print(chr(27) + "[2J")
 
+
+renderer = Renderer()
+renderer.init()
