@@ -20,17 +20,6 @@ from classes.Fighter import Fighter
 # print()
 
 
-# random_list = [i + 1 for i in range(30)]
-# print('A list:')
-# print(random_list)
-
-
-# random.shuffle(random_list)
-# print()
-# print('Shuffled:')
-# print(random_list)
-
-
 class Arena:
     
 
@@ -41,6 +30,9 @@ class Arena:
     fighter_left = None
     fighter_right = None
 
+    counter_left = 0
+    counter_right = 0
+
 
     def __init__(self):
         self.renderer = Renderer()
@@ -49,11 +41,20 @@ class Arena:
         self.fighter_left = Fighter()
         # self.fighter_left = Fighter(alg='insertion')
         # self.fighter_right = Fighter(alg='bubble')
-        self.fighter_right = Fighter()
+        self.fighter_right = Fighter(second=True)
         
         
     # def test(self):
     #     self.renderer.test()
+
+
+    def roll_winner(self):
+        chance_left = self.counter_right
+        chance_right = self.counter_left
+        if random.randint(0, chance_left + chance_right) < chance_left:
+            return 'left'
+        else:
+            return 'right'
 
 
     def start(self):
@@ -92,7 +93,13 @@ class Arena:
         self.renderer.name_left(self.fighter_left.name)
         self.renderer.name_right(self.fighter_right.name)
         
-        self.renderer.sort_both(self.fighter_left.history, self.fighter_left.focus, self.fighter_right.history, self.fighter_right.focus)
+        self.counter_left, self.counter_right = self.renderer.sort_both(self.fighter_left.history, self.fighter_left.focus, self.fighter_right.history, self.fighter_right.focus)
+
+        winner = self.roll_winner()
+        self.renderer.update_tug(winner)
+
+
+
 
         # self.renderer.sort_left(self.fighter_left.history, self.fighter_left.focus)
         # self.renderer.sort_right(self.fighter_right.history, self.fighter_right.focus)
