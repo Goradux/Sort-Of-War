@@ -6,7 +6,7 @@
 from classes.Core import Arena
 
 
-print('Hello! Welcome to the arena!')
+# print('Hello! Welcome to the arena!')
 
 
 simulation = Arena()
