@@ -1,8 +1,3 @@
-# import quicksort, mergesort, heapsort
-
-# use only n log n algos for fairness
-
-
 import random
 
 from classes.algorithms.Quicksort import Quicksort
@@ -11,14 +6,21 @@ from classes.algorithms.InsertionSort import InsertionSort
 from classes.algorithms.SelectionSort import SelectionSort
 from classes.algorithms.BubbleSort import BubbleSort
 
-choices = [Quicksort(), Mergesort(), InsertionSort(), SelectionSort(), BubbleSort()]
+
+# Mergesort is not ready
+# choices = [Quicksort(), Mergesort(), InsertionSort(), SelectionSort(), BubbleSort()]
+choices = [Quicksort(), InsertionSort(), SelectionSort(), BubbleSort()]
 
 class Fighter:
     algorithm = None
     name = 'generic'
+    # history is a list of lists that holds all of the previous states of the
+    # initial unsorted list
     history = []
+    # focus is a list of indexes that shows which of the elements of the history
+    # entries should be highlighted
     focus = []
-    # counter = []
+
 
     def __init__(self, alg=None, second=False):
         if not second:
@@ -27,6 +29,7 @@ class Fighter:
             if alg is 0:
                 self.algorithm = random.choice(choices)
                 choices.remove(self.algorithm)
+            # can set the first algorithm to a specific type for debugging
             elif alg is 'Quicksort':
                 self.algorithm = Quicksort()
             elif alg is 'Mergesort':
@@ -37,25 +40,17 @@ class Fighter:
                 self.algorithm = SelectionSort()
             elif alg is 'Bubble sort':
                 self.algorithm = BubbleSort()
-            self.name = self.algorithm.name
         else:
             if alg is None:
                 alg = 0
             if alg is 0:
                 self.algorithm = random.choice(choices)
             
-            self.name = self.algorithm.name
-
-        # actually unsure why this works
-        # !!! I think it works because we assign lists, and they are mutable
-        # so they auto update
+        self.name = self.algorithm.name
         self.history = self.algorithm.history
         self.focus = self.algorithm.focus
-        # counter is kinda useless?
-        # self.counter = self.algorithm.counter
 
 
-    # return a sorted list
     def sort(self, unsorted_list):
         return self.algorithm.sort(unsorted_list)
 
@@ -66,14 +61,4 @@ class Fighter:
         self.algorithm.reset()
         self.history = self.algorithm.history
         self.focus = self.algorithm.focus
-
-
-    # def counter(self):
-    #     return self.algorithm.get_counter()
-
-    # def history(self):
-    #     return self.algorithm.get_history()
-
-    
-    # def focus(self):
-    #     return self.algorithm.get_focus()
+        

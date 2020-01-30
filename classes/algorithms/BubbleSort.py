@@ -1,27 +1,12 @@
 class BubbleSort:
-    counter = 0
     name = 'Bubble sort'
     history = []
-    # focus are the indeces
     focus = []
-
-
-    def get_counter(self):
-        return self.counter
-
-
-    def get_history(self):
-        return self.history
-
-
-    def get_focus(self):
-        return self.focus
 
 
     def reset(self):
         self.history = []
         self.focus = []
-        self.counter = 0
 
 
     def sort(self, unsorted_list):
@@ -50,3 +35,4 @@ class BubbleSort:
         # print(array, -1)
         self.history.append(list(array))
         self.focus.append(-1)
+        

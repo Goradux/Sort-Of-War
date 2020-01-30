@@ -1,27 +1,13 @@
 class InsertionSort:
-    counter = 0
     name = 'Insertion sort'
     history = []
-    # focus are the indeces
     focus = []
-
-
-    def get_counter(self):
-        return self.counter
-
-
-    def get_history(self):
-        return self.history
-
-
-    def get_focus(self):
-        return self.focus
 
 
     def reset(self):
         self.history = []
         self.focus = []
-        self.counter = 0
+
 
     def sort(self, unsorted_list):
         self.insertion_sort(unsorted_list)
@@ -50,3 +36,4 @@ class InsertionSort:
         # print(array, -1)              # sorted array, with -1 as the focus
         self.history.append(list(array))
         self.focus.append(-1)
+        

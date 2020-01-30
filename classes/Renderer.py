@@ -22,20 +22,7 @@ def clear_terminal(width, height, first=False):
         print_at(i+1, 1, ''.ljust(width))
 
 
-def print_80_24():
-    print()
-    for i in range(24):
-        print(str(i).ljust(3), end='')
-        for j in range(77):
-            print('.', end='')
-        print()
-
-
-# print(chr(27) + "[2J") - escape sequence for clearing the terminal
-
-
 class Renderer:
-
 
     # orientation = 'horizontal'
     term_width = None
@@ -43,9 +30,6 @@ class Renderer:
     line_length = None
     line_amount = None
     middle_line = None
-    sorter_left = (None, None)
-    sorter_right = (None, None)
-    animation = (None, None)
     guy_side_amount = 0
     counter_current_left = 0
     counter_current_right = 0
@@ -77,25 +61,17 @@ class Renderer:
         self.term_width, self.term_height = get_terminal_dimensions()
         self.middle_line = round(self.term_width / 2)
         clear_terminal(self.term_width, self.term_height, first=True)
-        # print(self.term_width, self.term_height)
         if self.term_width < 36 or self.term_height < 17:
             print('The terminal window is too small. Shutting down.')
-            print('The terminal should be at least 36x20.')
+            print('The terminal should be at least 36x17.')
             print('Current dimensions are: ', self.term_width, 'columns by', self.term_height, 'lines.')
             sys.exit(1)
-
 
         # draw some basic terminal parts
         self.outline()
         self.draw_rope()
 
-        # number of blocks available per side
-        # print_at(self.term_height-8, 0, self.middle_line-1)
-        # print_at(1,1, str(self.term_width) + ' ' + str(self.term_height))
-
-
         self.guy_side_amount = self.calculate_guys_number()
-        # print_at(self.term_height-7, 1, self.guy_side_amount)
         self.draw_guys_left()
         self.draw_guys_right()
 
@@ -177,7 +153,7 @@ class Renderer:
                         print_at(1+index, self.middle_line + 1, ''.ljust(element2, ':'))
 
             counter += 1
-            time.sleep(0.04)
+            time.sleep(0.05)
         return self.counter_current_left, self.counter_current_right
 
 
@@ -185,7 +161,7 @@ class Renderer:
         if length is 0:
             self.rope_length = round(self.term_width/6*4+1)
         else:
-            self.rope_length -= length
+            self.rope_length -= abs(length)
         print_at(self.term_height - 4, length + round(self.term_width/6), ''.center(self.rope_length, '='))
 
 
@@ -234,15 +210,13 @@ class Renderer:
 
     def update_tug(self, winner):
         move = random.randint(1, 3)
-        # clean_tug_area()
         self.clear_terminal_at_for(1, self.term_height-8, self.term_width, 8)
-        # draw_new_rope()
         if winner is 'left':
             self.moved_left += move
             self.draw_rope(move)
         elif winner is 'right':
             self.moved_right += move
-            self.draw_rope(move * -1)
+            self.draw_rope(move)
         print_at(self.term_height-1, self.middle_line, '^')
         self.draw_guys_left()
         self.draw_guys_right()

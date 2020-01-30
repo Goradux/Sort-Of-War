@@ -1,24 +1,15 @@
 import datetime
 
 class Mergesort:
-    counter = 0
     name = 'Mergesort'
     history = []
     focus = []
     tmp_array = []
 
 
-    def get_counter(self):
-        return self.counter
-
-    def get_history(self):
-        return self.history
-
-
     def reset(self):
         self.history = []
         self.focus = []
-        self.counter = 0
         
 
     def sort(self, unsorted_list):
@@ -28,6 +19,7 @@ class Mergesort:
         self.focus.append(-1)
         return unsorted_list
     
+
     def mergesort(self, unsorted_list):
         # print("Splitting ",unsorted_list)
         if len(unsorted_list) > 1: 
