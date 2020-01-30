@@ -14,6 +14,13 @@ class Mergesort:
     def get_history(self):
         return self.history
 
+
+    def reset(self):
+        self.history = []
+        self.focus = []
+        self.counter = 0
+        
+
     def sort(self, unsorted_list):
         self.tmp_array = list(unsorted_list)
         self.mergesort(unsorted_list)

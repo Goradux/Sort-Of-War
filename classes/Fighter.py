@@ -60,6 +60,14 @@ class Fighter:
         return self.algorithm.sort(unsorted_list)
 
 
+    def reset(self):
+        self.history = []
+        self.focus = []
+        self.algorithm.reset()
+        self.history = self.algorithm.history
+        self.focus = self.algorithm.focus
+
+
     # def counter(self):
     #     return self.algorithm.get_counter()
 

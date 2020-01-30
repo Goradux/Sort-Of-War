@@ -18,6 +18,11 @@ class InsertionSort:
         return self.focus
 
 
+    def reset(self):
+        self.history = []
+        self.focus = []
+        self.counter = 0
+
     def sort(self, unsorted_list):
         self.insertion_sort(unsorted_list)
         return unsorted_list

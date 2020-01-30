@@ -23,6 +23,12 @@ class Quicksort:
         return self.focus
 
 
+    def reset(self):
+        self.history = []
+        self.focus = []
+        self.counter = 0
+        
+
     def sort(self, array):
         # start = datetime.datetime.now()
         self.tmp_array = list(array)

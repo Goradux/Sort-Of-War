@@ -1,4 +1,4 @@
-import ctypes, sys, time
+import ctypes, sys, time, random
 import shutil
 import itertools
 
@@ -47,8 +47,17 @@ class Renderer:
     sorter_right = (None, None)
     animation = (None, None)
     guy_side_amount = 0
-    length_left = 0
-    length_right = 0
+    counter_current_left = 0
+    counter_current_right = 0
+    pixels_to_lose = 0
+    moved_left = 0
+    moved_right = 0
+    rope_length = 0
+
+
+    def clear_terminal_at_for(self, at_x, at_y, width, lines):
+        for i in range(lines):
+            print_at(at_y+i, at_x, ''.ljust(width))
 
 
     def clear_terminal_right(self, width, height, first=False):
@@ -107,6 +116,10 @@ class Renderer:
         while length_left > round((self.middle_line - 1) / 1.5) and length_left > 17:
             length_left -= 8
             amount += 1
+        self.pixels_to_lose = length_left - round(self.middle_line / 3)
+        # self.moved_left = self.pixels_to_lose
+        # self.moved_right = self.pixels_to_lose
+        # print_at(self.term_height-1, 0, self.pixels_to_lose)
         return amount
 
 
@@ -142,12 +155,12 @@ class Renderer:
                 clear_terminal(self.line_length, self.line_amount)
                 # counter for left one
                 print_at(self.term_height-8, 1, str(counter).rjust(4))
-                self.length_left = counter
+                self.counter_current_left = counter
             if len(entry2) > 0:
                 self.clear_terminal_right(self.line_length, self.line_amount)
                 # counter for right one
                 print_at(self.term_height-8, self.term_width-3, str(counter).ljust(4))
-                self.length_right = counter
+                self.counter_current_right = counter
 
             for index, packed in enumerate(itertools.zip_longest(entry1, entry2)):
                 element1, element2 = packed
@@ -164,20 +177,24 @@ class Renderer:
                         print_at(1+index, self.middle_line + 1, ''.ljust(element2, ':'))
 
             counter += 1
-            time.sleep(0.02)
-        return self.length_left, self.length_right
+            time.sleep(0.04)
+        return self.counter_current_left, self.counter_current_right
 
 
-    def draw_rope(self):
-        print_at(self.term_height - 4, round(self.term_width/6), ''.center(round(self.term_width/6*4 + 1), '='))
+    def draw_rope(self, length=0):
+        if length is 0:
+            self.rope_length = round(self.term_width/6*4+1)
+        else:
+            self.rope_length -= length
+        print_at(self.term_height - 4, length + round(self.term_width/6), ''.center(self.rope_length, '='))
 
 
     # each guy is 8x8 characters
     def draw_guy_left(self, y_offset='default'):
         if y_offset is 'default':
-            y_offset = round(self.term_width/6) + 1
+            y_offset = round(self.term_width/6) + 1 + self.moved_left
         else:
-            y_offset += round(self.term_width/6) + 1
+            y_offset += round(self.term_width/6) + 1 + self.moved_left
         x = self.term_height - 8
         print_at(x  , y_offset, ' __     ')
         print_at(x+1, y_offset, '/><\    ')
@@ -186,7 +203,7 @@ class Renderer:
         print_at(x+4, y_offset, '==\/0\/0')
         print_at(x+5, y_offset, '|__|    ')
         print_at(x+6, y_offset, ' \  \   ')
-        print_at(x+7, y_offset, ' /_ /_  ')
+        print_at(x+7, y_offset, ' /_  \_ ')
 
     
     def draw_guys_left(self):
@@ -196,9 +213,9 @@ class Renderer:
 
     def draw_guy_right(self, y_offset='default'):
             if y_offset is 'default':
-                y_offset = round(self.term_width/6*5) - 8
+                y_offset = round(self.term_width/6*5) - 8 - self.moved_right
             else:
-                y_offset = round(self.term_width/6*5) - 8 - y_offset
+                y_offset = round(self.term_width/6*5) - 8 - y_offset - self.moved_right
             x = self.term_height - 8
             print_at(x  , y_offset, '     __ ')
             print_at(x+1, y_offset, '    /><\\')
@@ -207,7 +224,7 @@ class Renderer:
             print_at(x+4, y_offset, '0\/0\/==')
             print_at(x+5, y_offset, '    |__|')
             print_at(x+6, y_offset, '    / / ')
-            print_at(x+7, y_offset, '   _\_\ ')
+            print_at(x+7, y_offset, '  _/ _\ ')
 
 
     def draw_guys_right(self):
@@ -216,7 +233,31 @@ class Renderer:
 
 
     def update_tug(self, winner):
+        move = random.randint(1, 3)
+        # clean_tug_area()
+        self.clear_terminal_at_for(1, self.term_height-8, self.term_width, 8)
+        # draw_new_rope()
         if winner is 'left':
-            pass
+            self.moved_left += move
+            self.draw_rope(move)
         elif winner is 'right':
-            pass
+            self.moved_right += move
+            self.draw_rope(move * -1)
+        print_at(self.term_height-1, self.middle_line, '^')
+        self.draw_guys_left()
+        self.draw_guys_right()
+
+        self.check_win_condition()
+
+    
+    def check_win_condition(self):
+        if self.moved_left >= self.pixels_to_lose:
+            print_at(self.term_height-7, self.middle_line-6, '+----------+')
+            print_at(self.term_height-6, self.middle_line-6, '|RIGHT WON!|')
+            print_at(self.term_height-5, self.middle_line-6, '+----------+')
+            sys.exit(0)
+        if self.moved_right >= self.pixels_to_lose:
+            print_at(self.term_height-7, self.middle_line-6, '+----------+')
+            print_at(self.term_height-6, self.middle_line-6, '|LEFT WON! |')
+            print_at(self.term_height-5, self.middle_line-6, '+----------+')
+            sys.exit(0)
