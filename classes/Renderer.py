@@ -54,8 +54,9 @@ class Renderer:
     def init(self):
         # essentially the same as colorama, but without shortcuts
         # enables ansi escape sequences (some of them anyway)
-        kernel32 = ctypes.windll.kernel32
-        kernel32.SetConsoleMode(kernel32.GetStdHandle(-11), 7)
+        if sys.platform is 'win32':
+            kernel32 = ctypes.windll.kernel32
+            kernel32.SetConsoleMode(kernel32.GetStdHandle(-11), 7)
 
         # get terminal dimensions
         self.term_width, self.term_height = get_terminal_dimensions()
